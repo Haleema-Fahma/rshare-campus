@@ -1,0 +1,11 @@
+<form method="POST">
+    {% csrf_token %}
+
+    <button type="submit">
+        Yes, Delete
+    </button>
+
+    <a href="{% url 'listing_detail' listing.pk %}">
+        Cancel
+    </a>
+</form>

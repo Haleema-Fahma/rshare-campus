@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Received Requests</title>
+</head>
+
+<body>
+
+    <h1>Requests for My Listings</h1>
+
+    {% if requests %}
+
+        {% for request in requests %}
+
+            <div>
+
+                <h2>{{ request.listing.title }}</h2>
+
+                <p>
+                    Requested by: {{ request.requester.username }}
+                </p>
+
+                <p>
+                    Message: {{ request.message }}
+                </p>
+
+                <p>
+                    Status: {{ request.status|title }}
+                </p>
+
+                {% if request.status == "pending" %}
+
+                    <form method="POST"
+                          action="{% url 'approve_request' request.id %}"
+                          style="display:inline;">
+
+                        {% csrf_token %}
+
+                        <button type="submit">
+                            Approve
+                        </button>
+
+                    </form>
+
+                    <form method="POST"
+                          action="{% url 'reject_request' request.id %}"
+                          style="display:inline;">
+
+                        {% csrf_token %}
+
+                        <button type="submit">
+                            Reject
+                        </button>
+
+                    </form>
+
+                {% endif %}
+
+            </div>
+
+            <hr>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No requests received yet.</p>
+
+    {% endif %}
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Request Resource</title>
+</head>
+
+<body>
+
+    <h1>Request "{{ listing.title }}"</h1>
+
+    <p>
+        Owner: {{ listing.owner.username }}
+    </p>
+
+    <p>
+        Cost: {{ listing.credit_cost }} EcoCredits
+    </p>
+
+    <p>
+        Duration: {{ listing.duration_days }} days
+    </p>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">
+            Send Request
+        </button>
+
+        <a href="{% url 'listing_detail' listing.id %}">
+            Cancel
+        </a>
+
+    </form>
+
+</body>
+</html>

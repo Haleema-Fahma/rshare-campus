@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Explore | RShare</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f8f6;
+            color: #17352a;
+        }
+
+        nav {
+            background: #064d2c;
+            padding: 18px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav strong {
+            color: white;
+            font-size: 22px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin-bottom: 5px;
+            color: #064d2c;
+        }
+
+        .header p {
+            color: #6c7a74;
+        }
+
+        .share-btn {
+            background: #087f3f;
+            color: white;
+            padding: 13px 20px;
+            border-radius: 9px;
+            text-decoration: none;
+        }
+
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .filters input,
+        .filters select {
+            padding: 12px;
+            border: 1px solid #d8e0dc;
+            border-radius: 8px;
+            flex: 1;
+        }
+
+        .filters button {
+            background: #087f3f;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns:
+                repeat(4, 1fr);
+            gap: 22px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.06);
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .image {
+            height: 180px;
+            background: #e9f0ec;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .placeholder {
+            font-size: 50px;
+        }
+
+        .content {
+            padding: 18px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #e5f5eb;
+            color: #087f3f;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .content h3 {
+            margin: 5px 0;
+        }
+
+        .description {
+            color: #68756f;
+            font-size: 14px;
+            min-height: 40px;
+        }
+
+        .bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .credits {
+            color: #087f3f;
+            font-weight: bold;
+        }
+
+        .view {
+            color: #087f3f;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        @media(max-width: 900px) {
+
+            .grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+        @media(max-width: 600px) {
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<nav>
+
+    <strong>🌱 RShare</strong>
+
+    <div>
+
+        <a href="{% url 'dashboard' %}">
+            Dashboard
+        </a>
+
+        <a href="{% url 'explore' %}">
+            Explore
+        </a>
+
+        <a href="{% url 'my_listings' %}">
+            My Listings
+        </a>
+
+        <a href="{% url 'logout' %}">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<div class="container">
+
+    <div class="header">
+
+        <div>
+
+            <h1>
+                Explore Resources & Skills
+            </h1>
+
+            <p>
+                Find something useful from your RCSS community.
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'create_listing' %}"
+            class="share-btn"
+        >
+            + Share Something
+        </a>
+
+    </div>
+
+
+    <form
+        method="GET"
+        class="filters"
+    >
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search resources or skills..."
+            value="{{ search }}"
+        >
+
+        <select name="type">
+
+            <option value="">
+                All Types
+            </option>
+
+            <option
+                value="resource"
+                {% if selected_type == "resource" %}
+                selected
+                {% endif %}
+            >
+                Resources
+            </option>
+
+            <option
+                value="skill"
+                {% if selected_type == "skill" %}
+                selected
+                {% endif %}
+            >
+                Skills
+            </option>
+
+        </select>
+
+
+        <select name="category">
+
+            <option value="">
+                All Categories
+            </option>
+
+            <option value="academic">
+                Academic
+            </option>
+
+            <option value="books">
+                Books
+            </option>
+
+            <option value="technology">
+                Technology
+            </option>
+
+            <option value="electronics">
+                Electronics
+            </option>
+
+            <option value="photography">
+                Photography
+            </option>
+
+            <option value="programming">
+                Programming
+            </option>
+
+            <option value="design">
+                Design
+            </option>
+
+            <option value="sports">
+                Sports
+            </option>
+
+            <option value="other">
+                Other
+            </option>
+
+        </select>
+
+
+        <button type="submit">
+            Search
+        </button>
+
+    </form>
+
+
+    <div class="grid">
+
+        {% for listing in listings %}
+
+        <div class="card">
+
+            <div class="image">
+
+                {% if listing.image %}
+
+                    <img
+                        src="{{ listing.image.url }}"
+                        alt="{{ listing.title }}"
+                    >
+
+                {% else %}
+
+                    <div class="placeholder">
+
+                        {% if listing.listing_type == "skill" %}
+                            💡
+                        {% else %}
+                            📦
+                        {% endif %}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="content">
+
+                <span class="badge">
+
+                    {{ listing.get_listing_type_display }}
+
+                </span>
+
+                <h3>
+                    {{ listing.title }}
+                </h3>
+
+                <p class="description">
+                    {{ listing.description|truncatechars:70 }}
+                </p>
+
+                <div class="bottom">
+
+                    <span class="credits">
+                        {{ listing.credit_cost }}
+                        EcoCredits
+                    </span>
+
+                    <a
+                        href="{% url 'listing_detail' listing.pk %}"
+                        class="view"
+                    >
+                        View →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <p>
+            No listings found.
+        </p>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

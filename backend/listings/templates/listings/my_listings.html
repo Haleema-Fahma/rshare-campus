@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>My Listings | RShare</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f8f6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #064d2c;
+        }
+
+        .item {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .type {
+            color: #087f3f;
+            font-size: 13px;
+        }
+
+        a {
+            color: #087f3f;
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>
+        My Listings
+    </h1>
+
+    <p>
+        Resources and skills you are sharing.
+    </p>
+
+
+    {% for listing in listings %}
+
+    <div class="item">
+
+        <div>
+
+            <div class="type">
+                {{ listing.get_listing_type_display }}
+            </div>
+
+            <h3>
+                {{ listing.title }}
+            </h3>
+
+            <span>
+                {{ listing.credit_cost }} EcoCredits
+            </span>
+
+        </div>
+
+        <div>
+
+            <a
+                href="{% url 'listing_detail' listing.pk %}"
+            >
+                View
+            </a>
+
+            &nbsp; | &nbsp;
+
+            <a
+                href="{% url 'edit_listing' listing.pk %}"
+            >
+                Edit
+            </a>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <p>
+        You haven't shared anything yet.
+    </p>
+
+    {% endfor %}
+
+</div>
+
+</body>
+
+</html>

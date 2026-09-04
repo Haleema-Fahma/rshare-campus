@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ listing.title }} | RShare</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #1f2937;
+            padding: 18px 40px;
+            color: white;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-right: 25px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .listing-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .no-image {
+            height: 250px;
+            background-color: #e5e7eb;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: #111827;
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background-color: #e0f2fe;
+            color: #0369a1;
+            margin-right: 8px;
+            font-size: 14px;
+        }
+
+        .info {
+            margin: 20px 0;
+        }
+
+        .info p {
+            margin: 10px 0;
+        }
+
+        .credits {
+            font-size: 20px;
+            font-weight: bold;
+            color: #059669;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-right: 10px;
+            margin-top: 15px;
+            cursor: pointer;
+            border: none;
+            font-size: 15px;
+        }
+
+        .request {
+            background-color: #2563eb;
+            color: white;
+        }
+
+        .edit {
+            background-color: #f59e0b;
+            color: white;
+        }
+
+        .delete {
+            background-color: #dc2626;
+            color: white;
+        }
+
+        .back {
+            background-color: #6b7280;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <a href="{% url 'explore' %}">RShare</a>
+        <a href="{% url 'dashboard' %}">Dashboard</a>
+        <a href="{% url 'explore' %}">Explore</a>
+        <a href="{% url 'my_listings' %}">My Listings</a>
+    </div>
+
+
+    <div class="container">
+
+        <div class="card">
+
+            <!-- Listing Image -->
+            {% if listing.image %}
+                <img
+                    src="{{ listing.image.url }}"
+                    alt="{{ listing.title }}"
+                    class="listing-image"
+                >
+            {% else %}
+                <div class="no-image">
+                    No image available
+                </div>
+            {% endif %}
+
+
+            <!-- Title -->
+            <h1>{{ listing.title }}</h1>
+
+
+            <!-- Type and Category -->
+            <div>
+                <span class="badge">
+                    {{ listing.get_listing_type_display }}
+                </span>
+
+                <span class="badge">
+                    {{ listing.get_category_display }}
+                </span>
+
+                {% if listing.condition %}
+                    <span class="badge">
+                        {{ listing.get_condition_display }}
+                    </span>
+                {% endif %}
+            </div>
+
+
+            <!-- Description -->
+            <div class="info">
+
+                <h3>Description</h3>
+
+                <p>
+                    {{ listing.description }}
+                </p>
+
+            </div>
+
+
+            <!-- Listing Information -->
+            <div class="info">
+
+                <h3>Listing Information</h3>
+
+                <p>
+                    <strong>EcoCredit Cost:</strong>
+                    <span class="credits">
+                        {{ listing.credit_cost }} EcoCredits
+                    </span>
+                </p>
+
+                <p>
+                    <strong>Duration:</strong>
+                    {{ listing.duration_days }} day{{ listing.duration_days|pluralize }}
+                </p>
+
+                <p>
+                    <strong>Location:</strong>
+                    {{ listing.location }}
+                </p>
+
+                <p>
+                    <strong>Owner:</strong>
+                    {{ listing.owner.username }}
+                </p>
+
+            </div>
+
+
+            <!-- Buttons -->
+            <div>
+
+                {% if user == listing.owner %}
+
+                    <!-- Owner Controls -->
+
+                    <a
+                        href="{% url 'edit_listing' listing.id %}"
+                        class="button edit"
+                    >
+                        Edit Listing
+                    </a>
+
+                    <a
+                        href="{% url 'delete_listing' listing.id %}"
+                        class="button delete"
+                    >
+                        Delete Listing
+                    </a>
+
+                {% else %}
+
+                    <!-- Request Button -->
+
+                    {% if listing.is_available %}
+
+                        <a
+                            href="{% url 'create_request' listing.id %}"
+                            class="button request"
+                        >
+                            Request This
+                        </a>
+
+                    {% else %}
+
+                        <span class="button back">
+                            Currently Unavailable
+                        </span>
+
+                    {% endif %}
+
+                {% endif %}
+
+
+                <a
+                    href="{% url 'explore' %}"
+                    class="button back"
+                >
+                    Back to Explore
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

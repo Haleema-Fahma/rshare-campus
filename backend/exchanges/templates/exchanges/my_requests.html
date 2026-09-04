@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Requests</title>
+</head>
+
+<body>
+
+    <h1>My Exchange Requests</h1>
+
+    {% if requests %}
+
+        {% for request in requests %}
+
+            <div>
+
+                <h2>{{ request.listing.title }}</h2>
+
+                <p>
+                    Owner: {{ request.listing.owner.username }}
+                </p>
+
+                <p>
+                    Status: {{ request.status|title }}
+                </p>
+
+                <p>
+                    Requested Date: {{ request.requested_date }}
+                </p>
+
+                <p>
+                    {{ request.message }}
+                </p>
+
+            </div>
+
+            <hr>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>You haven't made any exchange requests yet.</p>
+
+    {% endif %}
+
+    <a href="{% url 'explore' %}">
+        Explore Listings
+    </a>
+
+</body>
+</html>

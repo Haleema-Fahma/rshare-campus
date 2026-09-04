@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Dashboard | RShare</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f8f6;
+        }
+
+        nav {
+            background: #064d2c;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .welcome {
+            margin-bottom: 30px;
+        }
+
+        .welcome h1 {
+            color: #064d2c;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns:
+                repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .number {
+            font-size: 30px;
+            font-weight: bold;
+            color: #087f3f;
+        }
+
+        .label {
+            color: #777;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<nav>
+
+    <strong>🌱 RShare</strong>
+
+    <div>
+
+        <a href="{% url 'dashboard' %}">
+            Dashboard
+        </a>
+
+<form method="POST" action="{% url 'logout' %}" style="display: inline;">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>
+
+    </div>
+
+</nav>
+
+
+<div class="container">
+
+    <div class="welcome">
+
+        <h1>
+            Welcome, {{ user.username }} 👋
+        </h1>
+
+        <p>
+            Welcome to the RShare campus community.
+        </p>
+
+    </div>
+
+
+    <div class="cards">
+
+        <div class="card">
+
+            <div class="number">
+                {{ user.wallet.balance }}
+            </div>
+
+            <div class="label">
+                EcoCredits
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="number">
+                {{ user.listings.count }}
+            </div>
+
+            <div class="label">
+                My Listings
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="number">
+                {{ user.exchange_requests.count }}
+            </div>
+
+            <div class="label">
+                My Requests
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="number">
+                0
+            </div>
+
+            <div class="label">
+                Completed Exchanges
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
